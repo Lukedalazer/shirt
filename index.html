@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE SHIRT — Limited Edition</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #fafafa;
+      --text: #111;
+      --muted: #666;
+      --accent: #111;
+      --accent-hover: #333;
+      --border: #e0e0e0;
+      --card-bg: #fff;
+      --success: #16a34a;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(250, 250, 250, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-weight: 900;
+      font-size: 1.25rem;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .cart-btn {
+      position: relative;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.25rem;
+      padding: 0.5rem;
+    }
+    .cart-badge {
+      position: absolute;
+      top: 0; right: -2px;
+      background: var(--text);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .cart-badge.show { display: flex; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      padding: 64px 2rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      align-items: center;
+    }
+
+    .hero-image {
+      position: relative;
+      aspect-ratio: 1;
+      background: #f0f0f0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 1.5rem;
+      transition: transform 0.4s ease;
+    }
+
+    .hero-image:hover .product-img {
+      transform: scale(1.05);
+    }
+
+    .hero-details { max-width: 480px; }
+
+    .badge {
+      display: inline-block;
+      background: var(--text);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.35rem 0.75rem;
+      border-radius: 100px;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-details h1 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-details .tagline {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .price {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+    .price-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    /* Size & Color Selectors */
+    .option-group { margin-bottom: 1.5rem; }
+    .option-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+      color: var(--muted);
+    }
+    .size-options, .color-options { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+    .size-btn {
+      width: 48px; height: 48px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: var(--card-bg);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .size-btn:hover { border-color: var(--text); }
+    .size-btn.active { background: var(--text); color: #fff; border-color: var(--text); }
+
+
+
+    /* CTA */
+    .add-to-cart {
+      width: 100%;
+      padding: 1rem 2rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+    }
+    .add-to-cart:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .add-to-cart:active { transform: translateY(0); }
+    .add-to-cart.added { background: var(--success); }
+
+    .features-row {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .feature svg { width: 16px; height: 16px; }
+
+    /* ── DETAILS SECTION ── */
+    .details-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    .details-section h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .detail-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .detail-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+
+    .detail-card .icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .detail-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .detail-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── REVIEWS ── */
+    .reviews-section {
+      background: var(--card-bg);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 6rem 2rem;
+    }
+
+    .reviews-section h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .reviews-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .review-card {
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+    }
+
+    .stars { color: #f59e0b; margin-bottom: 0.75rem; font-size: 0.9rem; letter-spacing: 2px; }
+    .review-card p {
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+      line-height: 1.7;
+    }
+    .reviewer {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 4rem 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    footer p { margin-bottom: 0.25rem; }
+
+    /* ── CART DRAWER ── */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0; right: 0;
+      width: 420px;
+      max-width: 90vw;
+      height: 100vh;
+      background: var(--card-bg);
+      z-index: 201;
+      transform: translateX(100%);
+      transition: transform 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -8px 0 32px rgba(0,0,0,0.1);
+    }
+    .cart-drawer.open { transform: translateX(0); }
+
+    .cart-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-header h3 { font-weight: 800; font-size: 1.1rem; }
+    .cart-close {
+      background: none; border: none; font-size: 1.5rem; cursor: pointer;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .cart-close:hover { color: var(--text); }
+
+    .cart-body { flex: 1; padding: 1.5rem; overflow-y: auto; }
+
+    .cart-empty {
+      text-align: center;
+      padding: 3rem 0;
+      color: var(--muted);
+    }
+    .cart-empty .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+
+    .cart-item-image {
+      width: 80px; height: 80px;
+      background: #f0f0f0;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .cart-item-image svg { width: 60px; height: 60px; }
+
+    .cart-item-info { flex: 1; }
+    .cart-item-info h4 { font-size: 0.9rem; font-weight: 700; }
+    .cart-item-info .item-meta { font-size: 0.75rem; color: var(--muted); margin: 0.25rem 0; }
+    .cart-item-info .item-price { font-weight: 700; }
+
+    .cart-item-actions { display: flex; align-items: center; gap: 0.5rem; }
+    .qty-btn {
+      width: 28px; height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .qty-btn:hover { border-color: var(--text); }
+    .qty-num { font-weight: 700; font-size: 0.9rem; min-width: 20px; text-align: center; }
+
+    .cart-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .checkout-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .checkout-btn:hover { background: var(--accent-hover); }
+
+    /* ── CHECKOUT MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 2.5rem;
+      max-width: 480px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalIn 0.3s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; }
+
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: var(--muted);
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus { outline: none; border-color: var(--text); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .place-order-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+      margin-top: 0.5rem;
+    }
+    .place-order-btn:hover { background: var(--accent-hover); }
+
+    .modal-close {
+      display: block;
+      margin-top: 1rem;
+      text-align: center;
+      background: none; border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-family: inherit;
+      width: 100%;
+    }
+    .modal-close:hover { color: var(--text); }
+
+    /* Success state */
+    .success-content { text-align: center; padding: 2rem 0; }
+    .success-content .check { font-size: 4rem; margin-bottom: 1rem; }
+    .success-content h2 { margin-bottom: 0.5rem; }
+    .success-content p { color: var(--muted); font-size: 0.95rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding-top: 96px;
+        min-height: auto;
+      }
+      .hero-details h1 { font-size: 2.5rem; }
+      .details-grid, .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      .hero { padding: 80px 1rem 3rem; }
+      .hero-details h1 { font-size: 2rem; }
+      .price { font-size: 1.5rem; }
+      .details-section, .reviews-section { padding: 3rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">THE SHIRT</div>
+    <div class="nav-links">
+      <a href="#details">Details</a>
+      <a href="#reviews">Reviews</a>
+      <button class="cart-btn" onclick="toggleCart()" aria-label="Cart">
+        🛒
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-image">
+      <img class="product-img" src="product.jpg" alt="The Shirt - Limited Edition">
+    </div>
+
+    <div class="hero-details">
+      <span class="badge">Limited Edition</span>
+      <h1>JizzFet drop #1</h1>
+      <p class="tagline">Premium heavyweight cotton. Perfect fit. Made to last forever.</p>
+
+      <div class="price">$49</div>
+      <p class="price-note">Free shipping worldwide · Free returns</p>
+
+      <div class="option-group">
+        <p class="option-label">Size</p>
+        <div class="size-options">
+          <button class="size-btn" onclick="setSize('XS', this)">XS</button>
+          <button class="size-btn" onclick="setSize('S', this)">S</button>
+          <button class="size-btn active" onclick="setSize('M', this)">M</button>
+          <button class="size-btn" onclick="setSize('L', this)">L</button>
+          <button class="size-btn" onclick="setSize('XL', this)">XL</button>
+        </div>
+      </div>
+
+      <button class="add-to-cart" id="addToCartBtn" onclick="addToCart()">Add to Cart — $49</button>
+
+      <div class="features-row">
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          100% Cotton
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          Lifetime Warranty
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          Ethically Made
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DETAILS -->
+  <section class="details-section" id="details">
+    <h2>Why This Shirt?</h2>
+    <div class="details-grid">
+      <div class="detail-card">
+        <div class="icon">🧵</div>
+        <h3>Premium Fabric</h3>
+        <p>280gsm heavyweight organic cotton that gets softer with every wash. No shrinking, no fading.</p>
+      </div>
+      <div class="detail-card">
+        <div class="icon">✂️</div>
+        <h3>Perfect Cut</h3>
+        <p>Relaxed fit with a modern silhouette. Designed to look great on every body type.</p>
+      </div>
+      <div class="detail-card">
+        <div class="icon">🌍</div>
+        <h3>Sustainable</h3>
+        <p>Ethically manufactured in Portugal using eco-friendly dyes and zero-waste packaging.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews-section" id="reviews">
+    <h2>What People Say</h2>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Honestly the best t-shirt I've ever owned. The weight and feel is incredible. I bought one in every color."</p>
+        <span class="reviewer">— Alex M.</span>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Finally a shirt that actually fits well. No weird boxy shape. It's like it was tailored for me."</p>
+        <span class="reviewer">— Jordan K.</span>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"30 washes in and it still looks brand new. The quality is unmatched at this price point."</p>
+        <span class="reviewer">— Sam R.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p><strong>THE SHIRT</strong></p>
+    <p>One shirt. Done right.</p>
+    <p style="margin-top: 1rem;">© 2026 THE SHIRT. All rights reserved.</p>
+  </footer>
+
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button class="cart-close" onclick="toggleCart()">×</button>
+    </div>
+    <div class="cart-body" id="cartBody">
+      <div class="cart-empty">
+        <div class="empty-icon">👕</div>
+        <p>Your cart is empty</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">$0</span>
+      </div>
+      <button class="checkout-btn" onclick="openCheckout()">Checkout</button>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal" id="modalContent">
+      <h2>Checkout</h2>
+      <form id="checkoutForm" onsubmit="placeOrder(event)">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" required placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" required placeholder="Jane Smith">
+        </div>
+        <div class="form-group">
+          <label>Shipping Address</label>
+          <input type="text" required placeholder="123 Main St, City, Country">
+        </div>
+        <div class="form-group">
+          <label>Card Number</label>
+          <input type="text" required placeholder="4242 4242 4242 4242" maxlength="19">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Expiry</label>
+            <input type="text" required placeholder="MM/YY" maxlength="5">
+          </div>
+          <div class="form-group">
+            <label>CVC</label>
+            <input type="text" required placeholder="123" maxlength="4">
+          </div>
+        </div>
+        <button type="submit" class="place-order-btn">Place Order — <span id="orderTotal">$0</span></button>
+      </form>
+      <button class="modal-close" onclick="closeCheckout()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    // ─── STATE ───
+    let selectedSize = 'M';
+    let selectedColor = 'default';
+    const colorNames = { 'default': '' };
+    let cart = [];
+    const PRICE = 49;
+
+    // ─── SIZE ───
+    function setSize(size, el) {
+      selectedSize = size;
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+
+
+    // ─── CART ───
+    function addToCart() {
+      const existing = cart.find(i => i.size === selectedSize && i.color === selectedColor);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ size: selectedSize, color: selectedColor, qty: 1 });
+      }
+      updateCartUI();
+
+      const btn = document.getElementById('addToCartBtn');
+      btn.textContent = '✓ Added!';
+      btn.classList.add('added');
+      setTimeout(() => {
+        btn.textContent = 'Add to Cart — $49';
+        btn.classList.remove('added');
+      }, 1500);
+
+      // Open cart drawer briefly
+      openCart();
+    }
+
+    function updateCartUI() {
+      const badge = document.getElementById('cartBadge');
+      const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+      const totalPrice = totalQty * PRICE;
+      badge.textContent = totalQty;
+      badge.classList.toggle('show', totalQty > 0);
+
+      const body = document.getElementById('cartBody');
+      const footer = document.getElementById('cartFooter');
+
+      if (cart.length === 0) {
+        body.innerHTML = '<div class="cart-empty"><div class="empty-icon">👕</div><p>Your cart is empty</p></div>';
+        footer.style.display = 'none';
+        return;
+      }
+
+      footer.style.display = 'block';
+      document.getElementById('cartTotal').textContent = `$${totalPrice}`;
+      document.getElementById('orderTotal').textContent = `$${totalPrice}`;
+
+      body.innerHTML = cart.map((item, i) => `
+        <div class="cart-item">
+          <div class="cart-item-image">
+            <img src="product.jpg" alt="The Shirt" style="width:100%;height:100%;object-fit:contain;padding:4px;">
+          </div>
+          <div class="cart-item-info">
+            <h4>The Shirt</h4>
+            <p class="item-meta">Size ${item.size}</p>
+            <p class="item-price">$${item.qty * PRICE}</p>
+          </div>
+          <div class="cart-item-actions">
+            <button class="qty-btn" onclick="changeQty(${i}, -1)">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function changeQty(index, delta) {
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) cart.splice(index, 1);
+      updateCartUI();
+    }
+
+    // ─── CART DRAWER ───
+    function openCart() {
+      document.getElementById('cartOverlay').classList.add('open');
+      document.getElementById('cartDrawer').classList.add('open');
+    }
+
+    function toggleCart() {
+      document.getElementById('cartOverlay').classList.toggle('open');
+      document.getElementById('cartDrawer').classList.toggle('open');
+    }
+
+    // ─── CHECKOUT ───
+    function openCheckout() {
+      toggleCart();
+      document.getElementById('checkoutModal').classList.add('open');
+    }
+
+    function closeCheckout() {
+      document.getElementById('checkoutModal').classList.remove('open');
+    }
+
+    function placeOrder(e) {
+      e.preventDefault();
+      const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+      const totalPrice = totalQty * PRICE;
+
+      document.getElementById('modalContent').innerHTML = `
+        <div class="success-content">
+          <div class="check">✅</div>
+          <h2>Order Confirmed!</h2>
+          <p>Thank you for your purchase of $${totalPrice}.<br>You'll receive a confirmation email shortly.</p>
+        </div>
+        <button class="modal-close" onclick="closeAndReset()" style="margin-top:1.5rem; font-size:1rem;">Close</button>
+      `;
+    }
+
+    function closeAndReset() {
+      cart = [];
+      updateCartUI();
+      closeCheckout();
+      // Restore form
+      location.reload();
+    }
+
+    // Close modal on overlay click
+    document.getElementById('checkoutModal').addEventListener('click', function(e) {
+      if (e.target === this) closeCheckout();
+    });
+  </script>
+
+</body>
+</html>
